@@ -1,36 +1,54 @@
 // This is a JavaScript program that creates a list of Pokémon and displays them on a webpage.
-let pokemonList = [
-    {
-        name: 'Bulbasaur', 
-        height: 0.7, 
-        types: ['grass', 'poison']
-    },
-    {
-        name: 'Charmander', 
-        height: 0.6, 
-        types: ['fire']
-    },
-    {
-        name: 'Squirtle', 
-        height: 0.5, 
-        types: ['water']
-    },
-    {
-        name: 'Caterpie', 
-        height: 0.3, 
-        types: ['bug']
-    },
-    {
-        name: 'Weedle', 
-        height: 0.3, 
-        types: ['bug', 'poison']
-    },
-    {
-        name: 'Pidgey', 
-        height: 0.3, 
-        types: ['normal', 'flying']
-    },
-];
+let pokemonRepository = (function () {
+    let pokemonList = [
+        {
+            name: 'Bulbasaur', 
+            height: 0.7, 
+            types: ['grass', 'poison']
+        },
+        {
+            name: 'Charmander', 
+            height: 0.6, 
+            types: ['fire']
+        },
+        {
+            name: 'Squirtle', 
+            height: 0.5, 
+            types: ['water']
+        },
+        {
+            name: 'Caterpie', 
+            height: 0.3, 
+            types: ['bug']
+        },
+        {
+            name: 'Weedle', 
+            height: 0.3, 
+            types: ['bug', 'poison']
+        },
+        {
+            name: 'Pidgey', 
+            height: 0.3, 
+            types: ['normal', 'flying']
+        },
+    ];
+
+    //Add a new Pokémon to the list
+    function add(pokemon) {
+        pokemonList.push(pokemon);
+    }
+
+    //returns all pokemon
+    function getAll() {
+        return pokemonList;
+    }
+
+    //Keys to penetrate the IIFE
+    return {
+        add: add,
+        getAll: getAll
+    };
+})();
 
 // Create a container for all Pokémon cards
 let container = document.createElement('div');
@@ -40,9 +58,7 @@ document.body.appendChild(container);
 // Uses a variable to ensure only one Pokémon gets the "Wow, that's big!" label
 let bigLabelGiven = false; // Tracks if the label has been used
 
-for (let i = 0; i < pokemonList.length; i++) {
-    let pokemon = pokemonList[i];
-
+pokemonRepository.getAll().forEach(function(pokemon) {
     // Determine the main type for coloring (uses the first type)
     let mainType = pokemon.types[0];
 
@@ -71,4 +87,4 @@ for (let i = 0; i < pokemonList.length; i++) {
     card.innerHTML = `${nameHTML}${heightHTML}${typesHTML}`;
     // Add card to container
     container.appendChild(card);
-}
+});
