@@ -43,48 +43,39 @@ let pokemonRepository = (function () {
         return pokemonList;
     }
 
+    function addListItem(pokemon) {
+        // Pulls unordered list
+        let pokemonList = document.querySelector('.pokemon-list');
+        // Creates li element for list
+        let listpokemon = document.createElement('li');
+        // Creates a button for each Pokémon, sets the text and adds a class
+        let button = document.createElement('button');
+        button.innerText = pokemon.name;
+        button.classList.add('button-class')
+        // Displays the buuton
+        listpokemon.appendChild(button);
+        pokemonList.appendChild(listpokemon);
+        // Adds an event listener to the button
+        button.addEventListener('click', function() {
+            showDetails(pokemon);
+        });
+    }
+
+    function showDetails(pokemon) {
+        console.log(pokemon);
+    }
+
     //Keys to penetrate the IIFE
     return {
         add: add,
-        getAll: getAll
+        getAll: getAll,
+        addListItem: addListItem
     };
 })();
-
-// Create a container for all Pokémon cards
-let container = document.createElement('div');
-container.className = 'pokemon-container';
-document.body.appendChild(container);
 
 // Uses a variable to ensure only one Pokémon gets the "Wow, that's big!" label
 let bigLabelGiven = false; // Tracks if the label has been used
 
 pokemonRepository.getAll().forEach(function(pokemon) {
-    // Determine the main type for coloring (uses the first type)
-    let mainType = pokemon.types[0];
-
-    // Build the card element
-    let card = document.createElement('div');
-    card.className = 'pokemon-card type-' + mainType;
-
-    // Pokémon name
-    let nameHTML = `<strong>${pokemon.name}</strong>`;
-
-    // Special highlight for Charmander
-    if (pokemon.name === 'Charmander') {
-        nameHTML += `<span class="special-highlight">(Special!)</span>`;
-    }
-
-    // Height and "Wow, that's big!" label
-    let heightHTML = ` (height: ${pokemon.height}m)`;
-    if (pokemon.height > 0.6 && !bigLabelGiven) {
-        heightHTML += `<span class="big-label">Wow, that’s big!</span>`;
-        bigLabelGiven = true;
-    }
-
-    // Types display
-    let typesHTML = `<div>Type: ${pokemon.types.join(', ')}</div>`;
-    // Set card HTML
-    card.innerHTML = `${nameHTML}${heightHTML}${typesHTML}`;
-    // Add card to container
-    container.appendChild(card);
+    pokemonRepository.addListItem(pokemon);
 });
